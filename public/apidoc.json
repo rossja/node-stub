@@ -1,0 +1,683 @@
+openapi: 3.0.0
+
+info:
+  description: Onramp API
+  version: "1.0.0"
+  title: Onramp API
+  contact:
+    email: onramp@wheelzapp.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+
+tags:
+  - name: admins
+    description: admin-only calls
+  - name: developers
+    description: Operations available to regular developers
+
+components:
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    userOptions:
+      type: object
+      properties:
+        givenName:
+          type: string
+        surName:
+          type: string
+        samAccountName:
+          type: string
+        password:
+          type: string
+      example: '{ "givenName": "Jane", "surName": "Doe", "samAccountNamev: "jdoe", "password": "secret"}'
+
+security:
+  - bearerAuth: []
+
+paths:
+  /listUsers:
+    get:
+      tags:
+        - developers
+        - admins
+      summary: returns a list of users
+      operationId: listUsers
+      description: |
+        returns a list of users
+      responses:
+        '200':
+          description: user list in JSON format
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: unauthorized - user is not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+        '403':
+          description: forbidden - user is authenticated but does not have required level of authorization
+          content:
+            application/json:
+              schema:
+                type: object
+        '500':
+          description: error processing request
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /listUsers/:userName:
+    get:
+      tags:
+        - developers
+        - admins
+      summary: returns info for a given user
+      operationId: listUsers
+      description: |
+        returns info for a given user
+      parameters:
+        - in: path
+          required: true
+          name: userName
+          schema:
+            type: string
+      responses:
+        '200':
+          description: user list in JSON format
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: unauthorized - user is not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+        '403':
+          description: forbidden - user is authenticated but does not have required level of authorization
+          content:
+            application/json:
+              schema:
+                type: object
+        '500':
+          description: error processing request
+          content:
+            application/json:
+              schema:
+                type: object
+  /listGroups:
+    get:
+      tags:
+        - developers
+        - admins
+      summary: returns a list of groups
+      operationId: getGroupsList
+      description: |
+        returns a list of groups
+      responses:
+        '200':
+          description: group list in JSON format
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: unauthorized - user is not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+        '403':
+          description: forbidden - user is authenticated but does not have required level of authorization
+          content:
+            application/json:
+              schema:
+                type: object
+        '500':
+          description: error processing request
+          content:
+            application/json:
+              schema:
+                type: object
+  /listGroups/:groupName:
+    get:
+      tags:
+        - developers
+        - admins
+      summary: returns info for a given group
+      operationId: listGroups
+      description: |
+        returns info for a given group
+      parameters:
+        - in: path
+          required: true
+          name: groupName
+          schema:
+            type: string
+      responses:
+        '200':
+          description: group list in JSON format
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: unauthorized - user is not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+        '403':
+          description: forbidden - user is authenticated but does not have required level of authorization
+          content:
+            application/json:
+              schema:
+                type: object
+        '500':
+          description: error processing request
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /listGroupMembers/:groupName:
+    get:
+      tags:
+        - developers
+        - admins
+      summary: gets the list of members in a given group
+      operationId: listGroupMembers
+      description: |
+        gets the list of users in a given group
+      parameters:
+        - in: path
+          required: true
+          name: groupName
+          schema:
+            type: string
+      responses:
+        '200':
+          description: member list in JSON format
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: unauthorized - user is not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+        '403':
+          description: forbidden - user is authenticated but does not have required level of authorization
+          content:
+            application/json:
+              schema:
+                type: object
+        '500':
+          description: error processing request
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /cmdlet:
+    post:
+      tags:
+        - admins
+      summary: runs commands and returns the output
+      operationId: exec
+      description: |
+        allows you to query the OS for information
+      parameters:
+        - in: query
+          name: cmd
+          description: pass command to run
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: command output in JSON format
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: unauthorized - user is not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+        '403':
+          description: forbidden - user is authenticated but does not have required level of authorization
+          content:
+            application/json:
+              schema:
+                type: object
+        '500':
+          description: error processing request
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /checkGroupMembership:
+    post:
+      tags:
+        - admins
+        - developers
+      summary: checks if a user is in a given group
+      operationId: checkGroupMembership
+      description: |
+        checks if a user is in a given group
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userName:
+                  type: string
+                groupName:
+                  type: string
+      responses:
+        '200':
+          description: output in JSON format
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: unauthorized - user is not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+        '403':
+          description: forbidden - user is authenticated but does not have required level of authorization
+          content:
+            application/json:
+              schema:
+                type: object
+        '409':
+          description: conflict - user already exists
+          content:
+            application/json:
+              schema:
+                type: object
+        '500':
+          description: error processing request
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /addUserToGroup:
+    post:
+      tags:
+        - admins
+      summary: adds a user to a group
+      operationId: addUserToGroup
+      description: |
+        adds a user to a group
+      parameters:
+        - in: query
+          name: userid
+          description: userid
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: groupid
+          description: groupid
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: output in JSON format
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: unauthorized - user is not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+        '403':
+          description: forbidden - user is authenticated but does not have required level of authorization
+          content:
+            application/json:
+              schema:
+                type: object
+        '409':
+          description: conflict - user already exists
+          content:
+            application/json:
+              schema:
+                type: object
+        '500':
+          description: error processing request
+          content:
+            application/json:
+              schema:
+                type: object
+  /removeUserFromGroup:
+    delete:
+      tags:
+        - admins
+      summary: removes a user from a group
+      operationId: removeUserFromGroup
+      description: |
+        removes a user from a group
+      parameters:
+        - in: query
+          name: userid
+          description: userid
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: groupid
+          description: groupid
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: output in JSON format
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: unauthorized - user is not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+        '403':
+          description: forbidden - user is authenticated but does not have required level of authorization
+          content:
+            application/json:
+              schema:
+                type: object
+        '500':
+          description: error processing request
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /addGroup:
+    put:
+      tags:
+        - admins
+      summary: adds a group
+      operationId: addGroup
+      description: |
+        adds a group
+      parameters:
+        - in: query
+          name: groupName
+          description: name of the new group
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: groupId
+          description: desired ID for the new group
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: output in JSON format
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: unauthorized - user is not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+        '403':
+          description: forbidden - user is authenticated but does not have required level of authorization
+          content:
+            application/json:
+              schema:
+                type: object
+        '409':
+          description: conflict - group already exists
+          content:
+            application/json:
+              schema:
+                type: object
+        '500':
+          description: error processing request
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /addUser:
+    put:
+      tags:
+        - admins
+      summary: adds a user
+      operationId: exec
+      description: |
+        adds a user
+      parameters:
+        - in: query
+          name: userName
+          description: desired user name
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: firstName
+          description: user first name
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: lastName
+          description: user last name
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: command output in JSON format
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: unauthorized - user is not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+        '403':
+          description: forbidden - user is authenticated but does not have required level of authorization
+          content:
+            application/json:
+              schema:
+                type: object
+        '409':
+          description: conflict - user already exists
+          content:
+            application/json:
+              schema:
+                type: object
+        '500':
+          description: error processing request
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /changeUserPassword:
+    post:
+      tags:
+        - admins
+        - developers
+      summary: changes a user password
+      operationId: changeUserPassword
+      description: |
+        changes a user password
+      parameters:
+        - in: query
+          name: oldPassword
+          description: old password
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: newPassword
+          description: new password
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: output in JSON format
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: unauthorized - user is not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+        '403':
+          description: forbidden - user is authenticated but does not have required level of authorization
+          content:
+            application/json:
+              schema:
+                type: object
+        '500':
+          description: error processing request
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /enableUser:
+    get:
+      tags:
+        - developers
+        - admins
+      summary: verifies a user's login credentials
+      operationId: authenticateUser
+      description: |
+        changes a user password
+      parameters:
+        - in: query
+          name: userid
+          description: user's login id
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: password
+          description: user's password
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: output in JSON format
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: unauthorized - user is not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+        '403':
+          description: forbidden - user is authenticated but does not have required level of authorization
+          content:
+            application/json:
+              schema:
+                type: object
+        '500':
+          description: error processing request
+          content:
+            application/json:
+              schema:
+                type: object
+
+  /disableUser:
+    get:
+      tags:
+        - developers
+        - admins
+      summary: verifies a user's login credentials
+      operationId: authenticateUser
+      description: |
+        changes a user password
+      parameters:
+        - in: query
+          name: userid
+          description: user's login id
+          required: true
+          schema:
+            type: string
+        - in: query
+          name: password
+          description: user's password
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: output in JSON format
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: unauthorized - user is not authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+        '403':
+          description: forbidden - user is authenticated but does not have required level of authorization
+          content:
+            application/json:
+              schema:
+                type: object
+        '500':
+          description: error processing request
+          content:
+            application/json:
+              schema:
+                type: object
+

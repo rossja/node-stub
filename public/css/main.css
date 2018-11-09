@@ -1,0 +1,31 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Move down content because we have a fixed navbar */
+  padding-top: 5rem;
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+body > .container {
+  padding: 60px 15px 0;
+}
+.content {
+  padding: 3rem 1.5rem;
+  text-align: center;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  /* Vertically center the text here */
+  line-height: 60px;
+}
+.footer > .container {
+  padding-right: 15px;
+  padding-left: 15px;
+  text-align: center;
+}

@@ -1,0 +1,8 @@
+server:
+  port: 9001
+  host: localhost
+
+corp:
+  companyName: CompanyName
+  copyrightYear: 2018
+  disclaimerText: All information contained within this site is company sensitive and should not be used without appropriate authorization.
