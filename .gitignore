@@ -82,4 +82,10 @@ typings/
 
 # End of https://www.gitignore.io/api/node
 
+# config file
 config.yml
+
+# stupid Mac crap
+.DS_Store
+
+

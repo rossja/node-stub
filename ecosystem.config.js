@@ -1,14 +1,14 @@
 module.exports = {
-  "apps": [{
-    "name": "onramp",
-    "script": "/data/web/onramp/index.js",
-    "cwd": "/data/web/onramp",
-    "watch": false,
-    "env": {
-      "NODE_ENV": "development"
+  'apps': [{
+    'name': 'testapp',
+    'script': '/data/web/testapp/index.js',
+    'cwd': '/data/web/testapp',
+    'watch': false,
+    'env': {
+      'NODE_ENV': 'development'
     },
-    "env_production": {
-      "NODE_ENV": "production"
+    'env_production': {
+      'NODE_ENV': 'production'
     }
   }]
 }

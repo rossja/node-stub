@@ -1,30 +1,30 @@
-"use strict";
+// libs
+const config = require('config-yml')
+const express = require('express')
+const helmet = require('helmet')
+const exphbs = require('express-handlebars')
+const logger = require('morgan')
 
-const config = require('config-yml');
-const morgan = require('morgan');
-const express = require('express');
-const exphbs  = require('express-handlebars');
-const app = express();
-
-const host = config.server.host
-const port = config.server.port
-
-const router = require('./router');
+// app
+const app = express()
+app.locals.footerText = config.corp.footerText
+app.locals.companyName = config.corp.companyName
 
 app.engine('.hbs', exphbs({
-  extname: '.hbs', 
+  extname: '.hbs',
   defaultLayout: 'main'
-}));
+}))
 
-app.set('view engine', '.hbs');
+app.set('view engine', '.hbs')
 
-app.use(morgan('dev'));
-app.use('/public', express.static('public'));
-app.use("/",router);
+// middleware
+app.use(logger('combined'))
+app.use('/public', express.static('public'))
+app.use(helmet())
 
-app.locals.copyrightYear = config.corp.copyrightYear;
-app.locals.companyName = config.corp.companyName;
-app.locals.disclaimerText = config.corp.disclaimerText;
+// routing
+const router = require('./router')
+app.use(router)
 
-app.listen(port, () => console.log('app is running at ' + host + ':' + port));
-
+// light it up!
+app.listen(config.app.port, () => console.info('app is running!'))
