@@ -6,6 +6,13 @@ router.route('/')
     res.render('index')
   })
 
+router.route('/echo')
+  .post(function (req, res) {
+    var message = req.body.messageText
+    res.json({ message: message })
+    res.end()
+  })
+
 router.route('*')
   .get(function (req, res) {
     res.render('404')

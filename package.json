@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "config": "^3.3.2",
-    "config-yml": "^0.10.3",
     "express": "^4.16.4",
     "express-handlebars": "^5.1.0",
     "helmet": "^4.1.1",
