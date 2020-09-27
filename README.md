@@ -15,8 +15,7 @@ things running.
 ## Installation
 
 1. Clone the repo or download the zip
-1. From a terminal, run `yarn install` in the root directory of the source tree
-1. Run the app using `node index.js`
+1. From a terminal, run `npm install` in the root directory of the source tree
+1. Run the app using `npm start`
   - If you want to use pm2, you can run `pm2 start` instead
-  - You can also run `npm start` which just runs `node index.js` for you
 1. Point a browser to <http://yourserver:9001>

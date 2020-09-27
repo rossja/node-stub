@@ -1,5 +1,5 @@
 // libs
-const config = require('config-yml')
+const config = require('config')
 const express = require('express')
 const helmet = require('helmet')
 const exphbs = require('express-handlebars')
@@ -7,8 +7,8 @@ const logger = require('morgan')
 
 // app
 const app = express()
-app.locals.footerText = config.corp.footerText
-app.locals.companyName = config.corp.companyName
+app.locals.footerText = config.get('corp.footerText')
+app.locals.companyName = config.get('corp.companyName')
 
 app.engine('.hbs', exphbs({
   extname: '.hbs',
@@ -18,7 +18,7 @@ app.engine('.hbs', exphbs({
 app.set('view engine', '.hbs')
 
 // middleware
-app.use(logger('combined'))
+app.use(logger('dev'))
 app.use('/public', express.static('public'))
 app.use(helmet())
 

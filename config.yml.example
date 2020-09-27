@@ -1,7 +1,0 @@
-app:
-  port: 9001
-  name: floofy.cat
-api:
-corp:
-  footerText: copyright &copy; 2019 floofy.cat
-  companyName: floofy.cat
